@@ -7,8 +7,11 @@ import { collection, deleteDoc, doc, getDocs, query, setDoc, getDoc } from "fire
 
 export default function Home() {
   const [inventory, setInventory] = useState([])
+  const [filteredInventory, setFilteredInventory] = useState([]);
   const [open, setOpen] = useState(false)
   const [itemName,setItemName] = useState('')
+  const [searchQuery, setSearchQuery] = useState('');
+
 
   const updateInventory = async () => {
     const snapshot = query(collection(firestore, 'inventory'))
@@ -21,6 +24,7 @@ export default function Home() {
       })
     })
     setInventory(inventoryList)
+    setFilteredInventory(inventoryList);
   }
 
   const addItem = async (item) => {
@@ -30,7 +34,6 @@ export default function Home() {
     if(docSnap.exists()){
       const {quantity} = docSnap.data()
       await setDoc(docRef, {quantity:quantity + 1})
-      
     }
     else{
       await setDoc(docRef, {quantity: 1})
@@ -61,6 +64,19 @@ export default function Home() {
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query === '') {
+      setFilteredInventory(inventory);
+    } else {
+      setFilteredInventory(
+        inventory.filter((item) =>
+          item.name.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+    }
+  };
 
 
   return (
@@ -101,7 +117,7 @@ export default function Home() {
             }}
             />
             <Button 
-            variant="outlined"
+            className="button-add"
               onClick={()=>{
                 addItem(itemName)
                 setItemName('')
@@ -121,21 +137,41 @@ export default function Home() {
       >
         Add New Item
       </Button>
-      <Box border="1px solid #333">
-        <Box
+      <Box 
         width="800px"
-        height="100px"
-        bgcolor="#ADD8E6"
         display="flex"
+        flexDirection="column"
         alignItems="center"
-        justifyContent="center"
+        gap={2}
+        border="1px solid #333"
+
+      >
+        <Box
+          width="800px"
+          height="100px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          className="header"
         >
-          <Typography variant="h2" color="#333"> Inventory Items </Typography>
+          <Typography variant="h2" color="#inherit"> 
+            Inventory Items 
+          </Typography>
         </Box>
+
+        <TextField
+          className="search-bar"
+          variant="outlined"
+          fullWidth
+          placeholder="Search items..."
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
+          sx={{ marginBottom: 2 }}
+        />
 
         <Stack width="800px" height="300px" spacing={2} overflow="auto">
           {
-            inventory.map(({name,quantity}) => (
+            filteredInventory.map(({name,quantity}) => (
               <Box 
                 key={name} 
                 width="100%" 
@@ -150,6 +186,7 @@ export default function Home() {
                 variant="h3"
                 color="#333"
                 textAlign="center"
+                className="item-text"
                 >
                   {name.charAt(0).toUpperCase() + name.slice(1)}
                 </Typography>
@@ -158,12 +195,13 @@ export default function Home() {
                 variant="h3"
                 color="#333"
                 textAlign="center"
+                className="item-text"
                 >
                   {quantity}
                 </Typography>
                 <Stack direction="row" spacing={2}>
                   <Button 
-                    variant="contained"
+                    className=" button-text button-add"
                     onClick={() => {
                       addItem(name)
                     }} 
@@ -171,7 +209,7 @@ export default function Home() {
                     Add
                   </Button>
                   <Button 
-                    variant="contained"
+                    className=" button-text button-remove"
                     onClick={() => {
                       removeItem(name)
                     }} 

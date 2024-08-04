@@ -1,5 +1,78 @@
+/* Resetting styles */
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+/* Color variables */
+:root {
+  --primary-color: #007bff;  /* Blue */
+  --accent-color: #f70808;   /* Amber */
+  --background-color: #f8f9fa; /* Light gray */
+  --text-color: #333333;     /* Dark gray for text */
+}
+
+/* Applying background and text color globally */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Arial', sans-serif; /* Consider setting a default font */
+}
+
+/* Specific styles for buttons */
+.button-add {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.button-remove {
+  background-color: var(--accent-color);
+  color: black;
+}
+
+.button-add, .button-remove {
+  padding: 12px 20px;  /* Adjust padding to suit your design */
+}
+/* Specific styles for the header */
+.header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;  /* Adjust padding for a better fit */
+  font-size: 20px;  /* Reduce font size if it feels too large */
+}
+
+.search-bar {
+  border: 2px solid #ccc;  /* Adds a subtle border */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* Adds a light shadow for depth */
+  padding: 10px 15px;  /* Increases padding for better text entry */
+  margin-bottom: 10px;  /* Adds more space below the search bar */
+
+}
+
+/* Typography styles for button text */
+.button-text {
+  font-size: 16px;  /* Suitable font size for button text */
+  font-weight: bold;  /* Bold to make the text stand out */
+}
+
+/* Typography styles for item names */
+.item-text {
+  font-size: 24px;  /* Slightly larger for item names */
+  font-weight: normal;  /* Normal weight to ensure readability */
+  margin-bottom: 4px;  /* Space below item name for visual separation */
+}
+
+/* Typography styles for item quantities */
+.quantity-text {
+  font-size: 24px;  /* Clear size for showing quantity */
+  font-weight: normal;  /* Regular weight for consistency */
+}
+
+.stack-item {
+  margin-bottom: 16px;  /* Adds more space between stack items *
+}
+
+.button {
+  margin: 8px;  /* Adds space around buttons to reduce clutter and enhance touch interaction */
 }
